@@ -1,0 +1,16 @@
+quit_r <- function() {
+  quit(save = "no", status = 0)
+}
+A <- matrix(runif(5000*5000), nrow = 5000, ncol = 5000)
+sum_by_rows_for <- function(mat) {
+  result <- numeric(nrow(mat))
+  for (i in 1:nrow(mat)) {
+    result[i] <- sum(mat[i, ])
+  }
+  return(result)
+}
+system.time(row_sums_for <- sum_by_rows_for(A))
+system.time(row_sums_apply <- apply(A, 1, sum))
+hilbert_matrix <- function(n) {
+  1 / outer(1:n, 1:n, FUN = "+") - 1
+}
