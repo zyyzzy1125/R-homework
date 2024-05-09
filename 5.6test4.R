@@ -1,0 +1,17 @@
+library(pheatmap)
+data <- read.table("D:/tencent/2023-2024-R/gm12878_oe.txt",header=FALSE)
+pheatmap(data)
+data<-as.matrix(data)
+data<-data[rowSums(data !=0)>0,colSums(data !=0)>0]
+data_vector<-as.vector(data)
+x90<-quantile(data_vector,0.9,na.rm=T)
+data[data>x90]<-x90
+pheatmap(data,color=colorRampPalette(c("blue","white","red"))(256),cluster_rows=F,cluster_cols=F)
+cor1<-cor(data,use="pairwise.complete.obs")
+color_breaks<-seq(-1,1,length.out=201)
+color_palette<-colorRampPalette(c("blue","white","red"))(200)
+pheatmap(cor1,color=color_palette,breaks=color_breaks,cluster_rows=F,cluster_cols=F)
+library(FactoMineR)
+pca_reasult<-PCA(data,graph=F)
+plot(pca_reasult$ind$coord[,1],type='l')
+abline(h=0,col='red',lwd=2)
